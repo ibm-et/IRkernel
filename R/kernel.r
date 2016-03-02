@@ -82,7 +82,7 @@ msg_to_wire = function(msg) {
         charToRaw(toJSON(msg$parent_header, auto_unbox = TRUE)),
         charToRaw(toJSON(msg$metadata,      auto_unbox = TRUE)),
         charToRaw(toJSON(msg$content,       auto_unbox = TRUE)))
-    
+
     signature <- sign_msg(bodyparts)
     c(
         msg$identities,
@@ -126,6 +126,7 @@ handle_shell = function() {
     msg <- wire_to_msg(parts)
     switch(
         msg$header$msg_type,
+        comm_info_request   = comm_manager$on_comm_info_request(msg),
         comm_open           = comm_manager$on_comm_open(msg),
         comm_msg            = comm_manager$on_comm_msg(msg),
         comm_close          = comm_manager$on_comm_close(msg),
@@ -317,7 +318,7 @@ initialize = function(connection_file) {
     executor <<- Executor$new(send_response = .self$send_response,
         abort_queued_messages = .self$abort_queued_messages)
     comm_manager <<- Comm_Manager$new(send_response = .self$send_response)
-    assign('kernel', .self, envir = .GlobalEnv)
+    assign('comm_manager', comm_manager, envir = .GlobalEnv)
 },
 
 run = function() {
