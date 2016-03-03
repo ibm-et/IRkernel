@@ -60,13 +60,20 @@ Comm_Manager <- setRefClass(
             ))
         },
         make_comm_list = function(comm_list) {
-            all_comms <- list()
-            for(the_comm in comm_list) {
+            all_comms <- lapply(comm_list, function(the_comm) {
+                comm <- list()
                 the_target_name <- the_comm$target_name
                 the_target_name_list <- list()
                 the_target_name_list[['target_name']] <- the_target_name
-                all_comms[[the_comm$id]] <- the_target_name_list
-            }
+                comm[[the_comm$id]] <- the_target_name_list
+            })
+            #all_comms <- list()
+            #for(the_comm in comm_list) {
+            #    the_target_name <- the_comm$target_name
+            #    the_target_name_list <- list()
+            #    the_target_name_list[['target_name']] <- the_target_name
+            #    all_comms[[the_comm$id]] <- the_target_name_list
+            #}
             return (all_comms)
         },
         #response:
@@ -95,6 +102,8 @@ Comm_Manager <- setRefClass(
                 comms[['comms']] <- make_comm_list(commid_to_comm)
             }
             reply_msg[['content']] <- comms
+            print("reply_msg is:")
+            print(reply_msg)
             send_response('comm_info_reply', request, 'shell', reply_msg)
         },
         #{
