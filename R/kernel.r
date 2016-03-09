@@ -318,7 +318,7 @@ initialize = function(connection_file) {
     executor <<- Executor$new(send_response = .self$send_response,
         abort_queued_messages = .self$abort_queued_messages)
     comm_manager <<- Comm_Manager$new(send_response = .self$send_response)
-    assign('comm_manager', comm_manager, envir = .GlobalEnv)
+    comm_manager_env$comm_manager <- comm_manager
 },
 
 run = function() {
@@ -354,6 +354,13 @@ run = function() {
     debug('main loop: end')
 })
 )
+
+comm_manager_env <- new.env()
+#' Get global CommManager instance
+#'
+#' @return \link{CommManager} instance if a kernel is running, else NULL
+#' @export
+comm_manager <- function() comm_manager_env$comm_manager
 
 #' Initialise and run the kernel
 #'
