@@ -8,8 +8,8 @@ fromRawJSON <- function(r) {
 }
 
 # Uncomment to get debug printouts to stderr
-#debug <- function(...) cat(sprintf(...), '\n', sep = '', file = stderr())
-debug <- function(...){}
+debug <- function(...) cat(sprintf(...), '\n', sep = '', file = stderr())
+#debug <- function(...){}
 
 #' The kernel
 #' 
